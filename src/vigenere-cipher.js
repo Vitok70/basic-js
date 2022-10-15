@@ -20,13 +20,55 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+   
+  constructor(type = true){
+    this.type = type
+  }  
+
+  encrypt(message, key) {
+
+let arrMessageUp = [], arrMessageSymbol =[], arrKey = [], arrEncrypt = [];
+let keyUp ='';
+let delta = 0;
+let strEncrypt ='';
+let messageUp = '';
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+let arrIndex = [];
+
+ if (!message || !key) { throw new Error ('Incorrect arguments!'); }
+    
+messageUp = message.toUpperCase();
+arrMessageUp = messageUp.split('');
+arrMessageSymbol = arrMessageUp.filter(item => alphabet.includes(item));
+
+keyUp =  key.toUpperCase();
+arrKey = keyUp.split('');
+delta = arrMessageSymbol.length - arrKey.length;
+if (delta > 0 ) {for (let i=0; i < delta; i++){  arrKey.push(arrKey[i]); }  }
+else if (delta < 0) { arrKey.splice(arrMessageSymbol.length-1,-delta); }
+
+
+
+for (let i=0; i < arrKey.length; i++){
+    arrIndex[i] = Math.ceil((alphabet.indexOf(arrMessageSymbol[i]) + alphabet.indexOf(arrKey[i])) % alphabet.length);
+    arrEncrypt.push(alphabet[arrIndex[i]]);
+}
+  
+  for (let i=0; i < arrMessageUp.length; i++){
+      if (!alphabet.includes(arrMessageUp[i])) {
+          arrEncrypt.splice(i,0,arrMessageUp[i]);
+      }
+  }  
+    strEncrypt = arrEncrypt.join('');
+    return strEncrypt;    
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+
+  decrypt(encryptedMessage, key) {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if (!encryptedMessage || !key) { throw new Error ('Incorrect arguments!'); }
+
+   
   }
 }
 
